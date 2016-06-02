@@ -1,0 +1,117 @@
+body{
+    background: #E5E9E8;
+    margin: 0px;
+    font-family: "Source Sans", helvetica, arial, sans-serif;
+}
+.headerTitle{
+    padding: 20px;
+    text-align: center;
+    border-bottom: solid 1px #9DACA9;
+    font-size: 20px;
+}
+.searchBoxRow{
+    padding: 10px 20px;
+    border-bottom: solid 1px #9DACA9;
+}
+.searchInput{
+    font-size: 20px;
+    background-image: url(images/search.png);
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-size: 0.75em;
+    padding: 0.5em;
+    padding-left: 1.5em;
+    width: 100%;
+    border-radius: 1em;
+    border: solid 1px #9DACA9;
+}
+.searchInput:hover, .searchInput:focus{
+    outline: none;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.4);
+}
+
+
+
+li{
+    list-style: none;
+    border-bottom: solid 1px #9DACA9;
+    padding: 5px;
+}
+li:not(:first-child){
+    border-top: solid 1px #FFF;
+}
+
+.avatar{
+    width: 50px;
+    float: left;
+    margin-right: 10px;
+}
+
+.clearfix:after{
+    content: " ";
+    clear: both;
+    display: table;
+    height: 0;
+    visibility: hidden;   
+}
+
+.margin0{
+    margin: 0;
+}
+
+.padding0{
+    padding: 0;   
+}
+
+.employeesList{
+    margin-bottom: 20px;
+}
+
+.name{
+    font-weight: 600;
+}
+.designation{
+    font-weight: 200;
+    font-size: 14px;
+    padding-top: 5px;
+}
+
+.centered{
+    text-align: center;
+    margin: 0 auto 20px;  
+    display: block;
+}
+
+.btnAdd, .btnSave, .toast, .btnBack{
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #333;
+    color:#FFF;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 2px;    
+}
+.toast{
+    cursor: none;
+    right: 100px;
+    bottom: 100px;
+    position: absolute;
+}
+.btnAdd:hover, .btnSave:hover, .btnBack:hover{
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.5);
+}
+.newName, .newDesignation{
+    font-size: 14px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.newName{
+    margin-top: 20px;
+}
+.hideContent{
+    display: none;
+}
+.btnSave{
+    margin-right: 10px;
+}
