@@ -11,7 +11,15 @@ var sortByName = function (data) {
         }
     }
     return data;
-}
+};
+
+var showToastMessage = function name() {
+    $(".toastMessageBox").removeClass("hideContent");
+    //Toast the message for only 2 seconds
+    setTimeout(function () {
+        $(".toastMessageBox").addClass("hideContent");
+    }, 2000);
+};
 
 var ListItems = React.createClass({
     render: function () {
@@ -43,15 +51,15 @@ var EmployeeList = React.createClass({
         updatedList = this.state.initialItems.filter(function (item) {
             return item.name.toLowerCase().search(event.target.value.toLowerCase()) !== -1;
         });
-        
+
         //re-render the list
         this.setState({ items: updatedList });
-        
+
         //conditions for showing add button
-        if(!updatedList.length){
+        if (!updatedList.length) {
             $(".addButton").removeClass("hideContent");
         }
-        if(updatedList.length >= 1){
+        if (updatedList.length >= 1) {
             $(".addButton").addClass("hideContent");
         }
     },
@@ -67,8 +75,9 @@ var EmployeeList = React.createClass({
                 });
 
             }.bind(this))
-            .fail(function(){
-                this.setState({msg:'unable to get data'});
+            .fail(function () {
+                this.setState({ msg: 'unable to get data' });
+                showToastMessage();
             }.bind(this));
     },
     componentDidMount: function () {
@@ -111,8 +120,8 @@ var EmployeeList = React.createClass({
                     initialLisItems[i] = initialLisItems[i - 1];
                 }
             }
-            
-            var newItem = {name: name, designation: designation, avatar: avatar};
+
+            var newItem = { name: name, designation: designation, avatar: avatar };
             //add the item in the determined position
             initialLisItems[pos] = newItem;
 
@@ -129,11 +138,7 @@ var EmployeeList = React.createClass({
             $(".mainContent").removeClass("hideContent");
         }
 
-        $(".toastMessageBox").removeClass("hideContent");
-        //Toast the message for only 2 seconds
-        setTimeout(function () {
-            $(".toastMessageBox").addClass("hideContent");
-        }, 2000);
+        showToastMessage();
     },
     backToHome: function () {
         //reset all
