@@ -66,6 +66,9 @@ var EmployeeList = React.createClass({
                     items: data
                 });
 
+            }.bind(this))
+            .fail(function(){
+                this.setState({msg:'unable to get data'});
             }.bind(this));
     },
     componentDidMount: function () {
