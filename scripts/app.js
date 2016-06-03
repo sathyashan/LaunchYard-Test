@@ -88,6 +88,7 @@ var EmployeeList = React.createClass({
         $(".mainContent").removeClass("hideContent")
             .addClass("hideContent");
         $(".newEmployeeForm").removeClass("hideContent");
+        $(".searchInput").val("");
     },
     saveInList: function () {
         var name = $(".newName").val(),
@@ -142,6 +143,8 @@ var EmployeeList = React.createClass({
     },
     backToHome: function () {
         //reset all
+        $(".searchInput").val("");
+        this.setState({items: this.state.initialItems});
         $(".newName").val("");
         $(".newDesignation").val("");
         $(".addButton").addClass("hideContent");
