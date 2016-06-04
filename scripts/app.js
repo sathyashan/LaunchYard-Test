@@ -13,10 +13,18 @@ var sortByName = function (data) {
     return data;
 };
 
+/* params
+   refElementId- Id of the element for which new class name will be added
+   className- name of the class 
+*/
 var addClass = function (refElementId, className) {
     document.getElementById(refElementId).classList.add(className);
 };
 
+/* params
+   refElementId- Id of the element for which class name (className) will be removed
+   className- name of the class 
+*/
 var removeClass = function (refElementId, className) {
     document.getElementById(refElementId).classList.remove(className);
 };
@@ -29,6 +37,9 @@ var showToastMessage = function name() {
     }, 2000);
 };
 
+/* params
+    url - url to get the data
+*/
 var httpGet = function (url) {
     var promise = new Promise(function (sucessCallBack, failureCallBack) {
         var client = new XMLHttpRequest();
