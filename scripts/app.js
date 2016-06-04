@@ -13,13 +13,41 @@ var sortByName = function (data) {
     return data;
 };
 
+var addClass = function (refElementId, className) {
+    document.getElementById(refElementId).classList.add(className);
+};
+
+var removeClass = function (refElementId, className) {
+    document.getElementById(refElementId).classList.remove(className);
+};
+
 var showToastMessage = function name() {
-    $(".toastMessageBox").removeClass("hideContent");
+    removeClass("toastMessageBox", "hideContent");
     //Toast the message for only 2 seconds
     setTimeout(function () {
-        $(".toastMessageBox").addClass("hideContent");
+        addClass("toastMessageBox", "hideContent");
     }, 2000);
 };
+
+var httpGet = function (url) {
+    var promise = new Promise(function (sucessCallBack, failureCallBack) {
+        var client = new XMLHttpRequest();
+        client.open("GET", url);
+        client.send();
+        client.onload = function () {
+            if (this.status >= 200 && this.status < 300) {
+                sucessCallBack(this.response);
+            } else {
+                failureCallBack(this.statusText);
+            }
+        };
+        client.onerror = function () {
+            failureCallBack(this.statusText);
+        };
+    });
+
+    return promise;
+}
 
 var ListItems = React.createClass({
     render: function () {
@@ -57,42 +85,47 @@ var EmployeeList = React.createClass({
 
         //conditions for showing add button
         if (!updatedList.length) {
-            $(".addButton").removeClass("hideContent");
+            removeClass("addButton", "hideContent");
         }
         if (updatedList.length >= 1) {
-            $(".addButton").addClass("hideContent");
+            addClass("addButton", "hideContent");
         }
     },
 
     componentWillMount: function () {
-        this.serverRequest = $.get("http://launchyard.com/js/sample.json",
-            function (data) {
-                console.log(data);
+        //following object defines the callback functions which to be passed in promise
+        var callBack = {
+            success: function (data) {
+                data = JSON.parse(data);
                 data = sortByName(data);
+                console.log(data);
                 this.setState({
                     initialItems: data,
                     items: data
                 });
-
-            }.bind(this))
-            .fail(function () {
+            },
+            fail: function () {
                 this.setState({ msg: 'unable to get data' });
                 showToastMessage();
-            }.bind(this));
+            } 
+        };
+        
+        httpGet("http://launchyard.com/js/sample.json")
+            .then(callBack.success.bind(this))
+            .catch(callBack.fail.bind(this));
     },
     componentDidMount: function () {
         //show content after getting data
-        $(".app").removeClass("hideContent");
+        removeClass("app", "hideContent");
     },
     addList: function () {
-        $(".mainContent").removeClass("hideContent")
-            .addClass("hideContent");
-        $(".newEmployeeForm").removeClass("hideContent");
-        $(".searchInput").val("");
+        addClass("mainContent", "hideContent");
+        removeClass("newEmployeeForm", "hideContent");
+        document.getElementsByClassName("searchInput")[0].value = "";
     },
     saveInList: function () {
-        var name = $(".newName").val(),
-            designation = $(".newDesignation").val(),
+        var name = document.getElementsByClassName("newName")[0].value,
+            designation = document.getElementsByClassName("newDesignation")[0].value,
             avatar = "http://coenraets.org/apps/angular-directory/pics/james_king.jpg";//using the same image
 
         //check for field emptiness
@@ -132,42 +165,42 @@ var EmployeeList = React.createClass({
                 msg: 'Saved Successfully'
             });
 
-            $(".newName").val("");
-            $(".newDesignation").val("");
-            $(".addButton").addClass("hideContent");
-            $(".newEmployeeForm").addClass("hideContent");
-            $(".mainContent").removeClass("hideContent");
+            document.getElementsByClassName("newName")[0].value = "";
+            document.getElementsByClassName("newDesignation")[0].value = "";
+            addClass("addButton", "hideContent");
+            addClass("newEmployeeForm", "hideContent");
+            removeClass("mainContent", "hideContent");
         }
 
         showToastMessage();
     },
     backToHome: function () {
         //reset all
-        $(".searchInput").val("");
-        this.setState({items: this.state.initialItems});
-        $(".newName").val("");
-        $(".newDesignation").val("");
-        $(".addButton").addClass("hideContent");
-        $(".newEmployeeForm").addClass("hideContent");
-        $(".mainContent").removeClass("hideContent");
+        document.getElementsByClassName("searchInput")[0].value = "";
+        this.setState({ items: this.state.initialItems });
+        document.getElementsByClassName("newName")[0].value = "";
+        document.getElementsByClassName("newDesignation")[0].value = "";
+        addClass("addButton", "hideContent");
+        addClass("newEmployeeForm", "hideContent");
+        removeClass("mainContent", "hideContent");
     },
     render: function () {
         return (
-            <div className="app hideContent">
-                <div className="mainContent">
-                    <div className="searchBoxRow" >
-                        <input className="searchInput" type= "text" placeholder= "search.." onChange={this.filterList} />
+            <div className="app hideContent" id="app">
+                <div className="mainContent" id="mainContent">
+                    <div className="searchBoxRow">
+                        <input className="searchInput" id="searchInput" type= "text" placeholder= "search.." onChange={this.filterList} />
                     </div>
                     <ListItems listItems={this.state.items} />
-                    <div className="addButton centered hideContent"><a className="btnAdd" onClick={this.addList}>ADD NEW</a></div>
+                    <div className="addButton centered hideContent" id="addButton"><a className="btnAdd" onClick={this.addList}>ADD NEW</a></div>
                 </div>
-                <div className="hideContent centered newEmployeeForm">
+                <div className="hideContent centered newEmployeeForm" id="newEmployeeForm">
                     <div> <input className="newName" placeholder="Employee Name" /> </div>
                     <div> <input className="newDesignation" placeholder="Designation" /> </div>
                     <a className="btnSave" onClick={this.saveInList}>SAVE</a>
                     <a className="btnBack" onClick={this.backToHome}>BACK</a>
                 </div>
-                <div className="hideContent toastMessageBox clearfix"><div className="toast">{this.state.msg}</div></div>
+                <div className="hideContent toastMessageBox clearfix" id="toastMessageBox"><div className="toast">{this.state.msg}</div></div>
             </div>
         );
     }
